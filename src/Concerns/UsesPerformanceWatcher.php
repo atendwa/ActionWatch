@@ -32,7 +32,7 @@ trait UsesPerformanceWatcher
      */
     public function performance(): array
     {
-        return [
+        $results = [
             'results' => [
                 'duration' => (microtime(true) - $this->actionStartTime) * 1000,
                 'peak_memory' => memory_get_peak_usage(true) / 1024 / 1024,
@@ -44,6 +44,10 @@ trait UsesPerformanceWatcher
                 'queries' => $this->maxQueriesCount(),
             ],
         ];
+
+        DB::disableQueryLog();
+
+        return $results;
     }
 
     public function constraints(?int $queries, ?int $duration, ?int $memory): self
