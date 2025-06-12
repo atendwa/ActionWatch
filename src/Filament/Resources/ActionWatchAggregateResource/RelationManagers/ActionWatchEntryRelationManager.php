@@ -27,7 +27,8 @@ class ActionWatchEntryRelationManager extends RelationManager
 
         self::$customTable = $table->columns([
             column('user.' . $attribute)->label("User's " . $attribute),
-            column('formatted_metrics')->label('Metrics')->badge()->color(fn (string $state): string => FormatMetrics::colour($state)),
+            column('formatted_metrics')->label('Metrics')->badge()
+                ->color(fn ($record): string => FormatMetrics::colour($record->getAttribute('formatted_metrics'), $record->getAttribute('class'))),
             column('formatted_constraints')->label('Constraints')->badge(),
         ]);
 

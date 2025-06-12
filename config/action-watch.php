@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'constraints' => [
-        'max_queries_count' => env('ACTION_WATCH_MAX_QUERIES_COUNT', 10),
+        'max_queries_count' => env('ACTION_WATCH_MAX_QUERIES_COUNT', 5),
         'max_peak_memory_usage_mbs' => env('ACTION_WATCH_MAX_PEAK_MEMORY_USAGE_MBS', 5),
         'max_duration_milliseconds' => env('ACTION_WATCH_MAX_DURATION_MILLISECONDS', 1000),
     ],

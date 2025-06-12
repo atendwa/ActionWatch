@@ -22,11 +22,21 @@ class FormatMetrics
             ->values();
     }
 
-    public static function colour(string $state): string
+    public static function colour(string $state, ?string $class = null): string
     {
+        // todo: dont read from config, get the constraints from the class
+
         $duration = config('action-watch.constraints.max_duration_milliseconds');
         $memory = config('action-watch.constraints.max_peak_memory_usage_mbs');
         $queries = config('action-watch.constraints.max_queries_count');
+
+        $class = app($class);
+
+        if ($class) {
+            $duration = $class->maxDurationMilliseconds() ?? $duration;
+            $queries = $class->maxQueriesCount() ?? $queries;
+            $memory = $class->maxPeakMemoryMbs() ?? $memory;
+        }
 
         $colours = [true => 'warning', false => 'success'];
         $stringable = str($state);
