@@ -9,17 +9,17 @@ use Illuminate\Support\Facades\DB;
 
 trait UsesPerformanceWatcher
 {
-    protected ?int $maxDurationMilliseconds = null;
+    protected static ?int $maxDurationMilliseconds = null;
 
-    protected ?int $maxQueriesCount = null;
+    protected static ?int $maxQueriesCount = null;
 
-    protected ?int $maxPeakMemoryMbs = null;
+    protected static ?int $maxPeakMemoryMbs = null;
 
-    protected float $actionStartTime;
+    protected static float $actionStartTime;
 
     public function __construct()
     {
-        $this->startWatch();
+        self::startWatch();
     }
 
     public function finish(): void
@@ -34,14 +34,14 @@ trait UsesPerformanceWatcher
     {
         $results = [
             'results' => [
-                'duration' => (microtime(true) - $this->actionStartTime) * 1000,
+                'duration' => (microtime(true) - self::$actionStartTime) * 1000,
                 'peak_memory' => memory_get_peak_usage(true) / 1024 / 1024,
                 'queries' => count(DB::getQueryLog()),
             ],
             'constraints' => [
-                'duration' => $this->maxDurationMilliseconds(),
-                'peak_memory' => $this->maxPeakMemoryMbs(),
-                'queries' => $this->maxQueriesCount(),
+                'duration' => self::maxDurationMilliseconds(),
+                'peak_memory' => self::maxPeakMemoryMbs(),
+                'queries' => self::maxQueriesCount(),
             ],
         ];
 
@@ -50,40 +50,40 @@ trait UsesPerformanceWatcher
         return $results;
     }
 
-    public function constraints(?int $queries, ?int $duration, ?int $memory): self
-    {
-        $this->maxDurationMilliseconds = $duration;
-        $this->maxQueriesCount = $queries;
-        $this->maxPeakMemoryMbs = $memory;
+//    public function constraints(?int $queries, ?int $duration, ?int $memory): self
+//    {
+//        $this->maxDurationMilliseconds = $duration;
+//        $this->maxQueriesCount = $queries;
+//        $this->maxPeakMemoryMbs = $memory;
+//
+//        return $this;
+//    }
 
-        return $this;
-    }
-
-    protected function startWatch(): void
+    protected static function startWatch(): void
     {
         DB::flushQueryLog();
         DB::enableQueryLog();
 
-        $this->actionStartTime = microtime(true);
+        self::$actionStartTime = microtime(true);
     }
 
-    protected function maxDurationMilliseconds(): int
+    public static function maxDurationMilliseconds(): int
     {
-        $value = $this->maxDurationMilliseconds ?? config('action-watch.constraints.max_duration_milliseconds');
+        $value = self::$maxDurationMilliseconds ?? config('action-watch.constraints.max_duration_milliseconds');
 
         return asInteger($value);
     }
 
-    protected function maxQueriesCount(): int
+    public static function maxQueriesCount(): int
     {
-        $value = $this->maxQueriesCount ?? config('action-watch.constraints.max_queries_count');
+        $value = self::$maxQueriesCount ?? config('action-watch.constraints.max_queries_count');
 
         return asInteger($value);
     }
 
-    protected function maxPeakMemoryMbs(): int
+    public static function maxPeakMemoryMbs(): int
     {
-        $value = $this->maxPeakMemoryMbs ?? config('action-watch.constraints.max_peak_memory_usage_mbs');
+        $value = self::$maxPeakMemoryMbs ?? config('action-watch.constraints.max_peak_memory_usage_mbs');
 
         return asInteger($value);
     }

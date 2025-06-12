@@ -30,9 +30,9 @@ class ActionWatchAggregateResource extends Resource
             ]),
             Fieldset::make('')->columns(3)->schema([
                 textEntry('formatted_averages')->badge()->label('Averages')
-                    ->color(fn ($record): string => FormatMetrics::colour($record->formatted_averages, $record->getAttribute('class'))),
+                    ->color(fn ($record, $state): string => FormatMetrics::colour($state, $record)),
                 textEntry('formatted_peaks')->badge()->label('Peaks')
-                    ->color(fn ($record): string => FormatMetrics::colour($record->formatted_peaks, $record->getAttribute('class'))),
+                    ->color(fn ($record, $state): string => FormatMetrics::colour($state, $record)),
                 textEntry('formatted_violation_counts')->label('Violation Counts')->badge()->color('gray'),
             ]),
         ]);
@@ -47,9 +47,9 @@ class ActionWatchAggregateResource extends Resource
             column('class'),
             column('occurrences'),
             column('formatted_averages')->label('Averages')->badge()
-                ->color(fn ($record): string => FormatMetrics::colour($record->formatted_metrics, $record->getAttribute('class'))),
+                ->color(fn ($record, $state): string => FormatMetrics::colour($state, $record)),
             column('formatted_peaks')->label('Peaks')->badge()
-                ->color(fn ($record): string => FormatMetrics::colour($record->formatted_peaks, $record->getAttribute('class'))),
+                ->color(fn ($record, $state): string => FormatMetrics::colour($state, $record)),
             column('formatted_violation_counts')->label('Violation Counts')->badge(),
         ]);
 

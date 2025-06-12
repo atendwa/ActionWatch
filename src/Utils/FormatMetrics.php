@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Atendwa\ActionWatch\Utils;
 
+use Atendwa\ActionWatch\Models\ActionWatchAggregate;
+use Atendwa\ActionWatch\Models\ActionWatchEntry;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class FormatMetrics
@@ -18,24 +21,32 @@ class FormatMetrics
         $texts = $useSuffixes ? self::suffixes() : self::prefixes();
 
         return $collection
-            ->map(fn ($value, $key) => str($texts[$key])->replace('{x}', (string) round($value))->toString())
+            ->map(fn($value, $key) => str($texts[$key])->replace('{x}', (string) round($value))->toString())
             ->values();
     }
 
-    public static function colour(string $state, ?string $class = null): string
+    public static function colour(string $state, ?Model $model = null): string
     {
-        // todo: dont read from config, get the constraints from the class
+        try {
+            if ($model instanceof ActionWatchAggregate) {
+                $class = app($model->class);
 
-        $duration = config('action-watch.constraints.max_duration_milliseconds');
-        $memory = config('action-watch.constraints.max_peak_memory_usage_mbs');
-        $queries = config('action-watch.constraints.max_queries_count');
+                $duration = $class::maxDurationMilliseconds();
+                $queries = $class::maxQueriesCount();
+                $memory = $class::maxPeakMemoryMbs();
+            }
 
-        $class = app($class);
+            if ($model instanceof ActionWatchEntry) {
+                $constraints = $model->constraints;
 
-        if ($class) {
-            $duration = $class->maxDurationMilliseconds() ?? $duration;
-            $queries = $class->maxQueriesCount() ?? $queries;
-            $memory = $class->maxPeakMemoryMbs() ?? $memory;
+                $memory = $constraints->get('peak_memory');
+                $duration = $constraints->get('duration');
+                $queries = $constraints->get('queries');
+            }
+        } catch (\Throwable) {
+            $duration = config('action-watch.constraints.max_duration_milliseconds');
+            $memory = config('action-watch.constraints.max_peak_memory_usage_mbs');
+            $queries = config('action-watch.constraints.max_queries_count');
         }
 
         $colours = [true => 'warning', false => 'success'];
