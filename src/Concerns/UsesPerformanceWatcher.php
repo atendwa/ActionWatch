@@ -50,23 +50,6 @@ trait UsesPerformanceWatcher
         return $results;
     }
 
-//    public function constraints(?int $queries, ?int $duration, ?int $memory): self
-//    {
-//        $this->maxDurationMilliseconds = $duration;
-//        $this->maxQueriesCount = $queries;
-//        $this->maxPeakMemoryMbs = $memory;
-//
-//        return $this;
-//    }
-
-    protected static function startWatch(): void
-    {
-        DB::flushQueryLog();
-        DB::enableQueryLog();
-
-        self::$actionStartTime = microtime(true);
-    }
-
     public static function maxDurationMilliseconds(): int
     {
         $value = self::$maxDurationMilliseconds ?? config('action-watch.constraints.max_duration_milliseconds');
@@ -86,5 +69,22 @@ trait UsesPerformanceWatcher
         $value = self::$maxPeakMemoryMbs ?? config('action-watch.constraints.max_peak_memory_usage_mbs');
 
         return asInteger($value);
+    }
+
+    //    public function constraints(?int $queries, ?int $duration, ?int $memory): self
+    //    {
+    //        $this->maxDurationMilliseconds = $duration;
+    //        $this->maxQueriesCount = $queries;
+    //        $this->maxPeakMemoryMbs = $memory;
+    //
+    //        return $this;
+    //    }
+
+    protected static function startWatch(): void
+    {
+        DB::flushQueryLog();
+        DB::enableQueryLog();
+
+        self::$actionStartTime = microtime(true);
     }
 }

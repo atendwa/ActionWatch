@@ -8,6 +8,7 @@ use Atendwa\ActionWatch\Models\ActionWatchAggregate;
 use Atendwa\ActionWatch\Models\ActionWatchEntry;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Throwable;
 
 class FormatMetrics
 {
@@ -21,7 +22,7 @@ class FormatMetrics
         $texts = $useSuffixes ? self::suffixes() : self::prefixes();
 
         return $collection
-            ->map(fn($value, $key) => str($texts[$key])->replace('{x}', (string) round($value))->toString())
+            ->map(fn ($value, $key) => str($texts[$key])->replace('{x}', (string) round($value))->toString())
             ->values();
     }
 
@@ -43,7 +44,7 @@ class FormatMetrics
                 $duration = $constraints->get('duration');
                 $queries = $constraints->get('queries');
             }
-        } catch (\Throwable) {
+        } catch (Throwable) {
             $duration = config('action-watch.constraints.max_duration_milliseconds');
             $memory = config('action-watch.constraints.max_peak_memory_usage_mbs');
             $queries = config('action-watch.constraints.max_queries_count');
