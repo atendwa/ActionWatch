@@ -15,7 +15,7 @@ return new class() extends Migration
     {
         Schema::create('action_watch_aggregates', function (Blueprint $blueprint): void {
             $blueprint->id();
-            $blueprint->slug();
+//            $blueprint->slug();
             $blueprint->string('class');
             $blueprint->integer('occurrences');
             $blueprint->json('averages')->nullable();
