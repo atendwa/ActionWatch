@@ -21,6 +21,11 @@ class ActionWatchAggregateResource extends Resource
 {
     use CustomizesFilamentResource;
 
+    public static function getRecordTitle(?Model $record): string|Htmlable|null
+    {
+        return $record?->class;
+    }
+
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
