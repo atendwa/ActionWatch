@@ -2,6 +2,18 @@
 
 All notable changes to `ActionWatch` will be documented in this file.
 
+## 1.0.6 - 2025-12-03
+
+### What's Changed
+
+* chore(deps): bump aglipanci/laravel-pint-action from 2.5 to 2.6 by @dependabot[bot] in https://github.com/atendwa/ActionWatch/pull/2
+
+### New Contributors
+
+* @dependabot[bot] made their first contribution in https://github.com/atendwa/ActionWatch/pull/2
+
+**Full Changelog**: https://github.com/atendwa/ActionWatch/compare/1.0.4...1.0.6
+
 ## 1.0.5 - 2025-07-07
 
 **Full Changelog**: https://github.com/atendwa/ActionWatch/compare/1.0.4...1.0.5
