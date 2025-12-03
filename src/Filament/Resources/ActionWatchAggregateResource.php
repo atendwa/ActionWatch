@@ -15,6 +15,8 @@ use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Model;
 use Throwable;
 
 class ActionWatchAggregateResource extends Resource
