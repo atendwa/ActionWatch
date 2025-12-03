@@ -2,6 +2,10 @@
 
 All notable changes to `ActionWatch` will be documented in this file.
 
+## 1.0.7 - 2025-12-03
+
+**Full Changelog**: https://github.com/atendwa/ActionWatch/compare/1.0.6...1.0.7
+
 ## 1.0.6 - 2025-12-03
 
 ### What's Changed
