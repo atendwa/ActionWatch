@@ -17,9 +17,9 @@
     ],
     "require": {
         "php": "^8.2",
-        "atendwa/filakit": "^1.0",
-        "atendwa/support": "^1.0",
-        "illuminate/contracts": "^10.0||^11.0||^12.0",
+        "atendwa/filakit": "^2.0",
+        "atendwa/support": "^2.0",
+        "illuminate/contracts": "^12.0||^13.0",
         "rector/rector": "^2.0"
     },
     "require-dev": {
