@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Atendwa\ActionWatch\Filament\Resources;
 
-use Filament\Schemas\Schema;
 use Atendwa\ActionWatch\Filament\Resources\ActionWatchAggregateResource\Pages\ListActionWatchAggregates;
 use Atendwa\ActionWatch\Filament\Resources\ActionWatchAggregateResource\Pages\ViewActionWatchAggregate;
 use Atendwa\ActionWatch\Filament\Resources\ActionWatchAggregateResource\RelationManagers\ActionWatchEntryRelationManager;
@@ -12,8 +11,9 @@ use Atendwa\ActionWatch\Utils\FormatMetrics;
 use Atendwa\Filakit\Concerns\CustomizesFilamentResource;
 use Atendwa\Filakit\Resource;
 use Filament\Clusters\Cluster;
-use Filament\Schemas\Components\Fieldset;
 use Filament\Resources\Pages\PageRegistration;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
@@ -31,11 +31,11 @@ class ActionWatchAggregateResource extends Resource
     public static function infolist(Schema $schema): Schema
     {
         return $schema->components([
-            \Filament\Schemas\Components\Fieldset::make('')->schema([
+            Fieldset::make('')->schema([
                 textEntry('class'),
                 textEntry('occurrences'),
             ]),
-            \Filament\Schemas\Components\Fieldset::make('')->columns(3)->schema([
+            Fieldset::make('')->columns(3)->schema([
                 textEntry('formatted_averages')->badge()->label('Averages')
                     ->color(fn ($record, $state): string => FormatMetrics::colour($state, $record)),
                 textEntry('formatted_peaks')->badge()->label('Peaks')
